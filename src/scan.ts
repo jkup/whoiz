@@ -8,7 +8,9 @@ import { lookupAsn, resolveHost } from "./net/dns.js";
 import { type Fetched, fetchUrl } from "./net/fetch.js";
 import { certInfo } from "./net/tls.js";
 
-export const VERSION = "0.1.0";
+declare const __WHOIZ_VERSION__: string | undefined;
+/** Injected by tsup at build time; falls back for `npm run dev`. */
+export const VERSION: string = typeof __WHOIZ_VERSION__ === "string" ? __WHOIZ_VERSION__ : "dev";
 const UA = `whoiz/${VERSION} (+https://github.com/jkup/whoiz)`;
 
 export function parseTarget(input: string): string {
