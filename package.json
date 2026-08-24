@@ -1,6 +1,6 @@
 {
   "name": "@jkup/whoiz",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Who is actually serving this site? Enumerate a domain's endpoints and fingerprint the CDN and hosting provider behind each one.",
   "keywords": [
     "cdn",
