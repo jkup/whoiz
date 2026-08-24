@@ -1,5 +1,7 @@
 # whoiz
 
+[![npm](https://img.shields.io/npm/v/%40jkup%2Fwhoiz?color=cb3837)](https://www.npmjs.com/package/@jkup/whoiz)
+
 **Who is actually serving this site?**
 
 ```
@@ -47,7 +49,7 @@ Recognised: Cloudflare (+ Pages), Vercel, Netlify, CloudFront, S3, Fastly, GitHu
 
 ## Etiquette
 
-whoiz identifies itself (`whoiz/<version> (+repo)`), obeys `robots.txt`, defaults to 8 concurrent requests and 100 URLs, backs off on the first `429`, and never follows links off the domain — other subdomains are only probed at their root plus a few linked pages. It only talks to the target and to DNS; there are no third-party APIs or telemetry.
+whoiz identifies itself with a `whoiz/<version>` user agent linking to this repo, obeys `robots.txt`, keeps request volume modest by default, backs off on the first `429`, and never follows links off the domain — other subdomains are only probed at their root plus a few linked pages. It only talks to the target and to DNS; there are no third-party APIs or telemetry.
 
 ## Limitations
 
