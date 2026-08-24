@@ -46,7 +46,7 @@ describe("renderSvg", () => {
     expect(svg).toContain(">Shopify<");
     expect(svg).toContain("via");
     expect(svg).toContain("npx @jkup/whoiz a.com");
-    expect(svg).toContain('fill="#F38020"'); // Cloudflare dot
+    expect(svg).toContain('color="#F38020"'); // Cloudflare cloud icon
     expect(svg).toContain("<line"); // connectors are geometry, not glyphs
     expect(svg).toContain("/x&lt;y&gt;&amp;z"); // escaped
   });

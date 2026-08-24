@@ -37,8 +37,41 @@ interface Run {
   text: string;
   color: string;
   bold?: boolean;
-  /** Draw a provider dot before the text in this colour. */
+  /** Draw a provider icon before the text in this colour. */
   dot?: string;
+  glyph?: string;
+}
+
+/**
+ * Vector stand-ins for the terminal glyphs, drawn in a 12×12 box centred on the origin.
+ * Fonts can't be trusted to have these symbols, so we draw them.
+ */
+const SHAPES: Record<string, string> = {
+  "☁": '<path d="M-3.5 3.5h7.2a2.6 2.6 0 0 0 .3-5.2 3.6 3.6 0 0 0-6.9-.9A2.9 2.9 0 0 0-3.5 3.5z" fill="currentColor"/>',
+  "▲": '<path d="M0-5.2 5.4 4.6H-5.4z" fill="currentColor"/>',
+  "◈": '<path d="M0-5.6 5.6 0 0 5.6-5.6 0z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M0-2.4 2.4 0 0 2.4-2.4 0z" fill="currentColor"/>',
+  "⌘": '<path d="M0-5.4 4.8-2.7v5.4L0 5.4-4.8 2.7v-5.4z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M0 0v5.4M0 0l4.8-2.7M0 0l-4.8-2.7" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+  "⚡": '<path d="M1.2-6-4 1h3.2L-1.2 6 4-1H.8z" fill="currentColor"/>',
+  "◆": '<path d="M0-5.6 5.6 0 0 5.6-5.6 0z" fill="currentColor"/>',
+  "✈": '<path d="M-5.5-1.5 5.5-5 1.5 5.5-.5 1.2z" fill="currentColor"/><path d="M-.5 1.2 5.5-5" stroke="#0d1117" stroke-width="1"/>',
+  "◉": '<circle r="5.2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle r="2.4" fill="currentColor"/>',
+  "●": '<circle r="4.8" fill="currentColor"/>',
+  "◍": '<circle r="5.2" fill="currentColor"/><circle r="2.6" fill="none" stroke="#0d1117" stroke-width="1.2"/>',
+  "■": '<rect x="-4.6" y="-4.6" width="9.2" height="9.2" fill="currentColor"/>',
+  "Ⓦ": '<circle r="5.4" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M-3.2-2.6 -1.6 2.6 0-1.4 1.6 2.6 3.2-2.6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>',
+  "◧": '<rect x="-4.8" y="-4.8" width="9.6" height="9.6" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="-4.8" y="-4.8" width="4.8" height="9.6" fill="currentColor"/>',
+  "◢": '<path d="M5.2 5.2H-5.2L5.2-5.2z" fill="currentColor"/>',
+  "⬢": '<path d="M0-5.6 4.9-2.8v5.6L0 5.6-4.9 2.8v-5.6z" fill="currentColor"/>',
+  "▮": '<rect x="-3" y="-5.2" width="6" height="10.4" rx="1" fill="currentColor"/>',
+  "◐": '<circle r="5.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M0-5.2a5.2 5.2 0 0 0 0 10.4z" fill="currentColor"/>',
+  "◑": '<circle r="5.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M0-5.2a5.2 5.2 0 0 1 0 10.4z" fill="currentColor"/>',
+  "▣": '<rect x="-5" y="-5" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="-2.6" y="-2.6" width="5.2" height="5.2" fill="currentColor"/>',
+  "◌": '<circle r="4.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.2 2"/>',
+};
+
+function shape(glyph: string, cx: number, cy: number, color: string): string {
+  const body = SHAPES[glyph] ?? SHAPES["●"]!;
+  return `<g transform="translate(${cx} ${cy})" color="${color}">${body}</g>`;
 }
 
 /** A row's visual content as positioned runs plus the connector geometry to draw. */
@@ -59,6 +92,7 @@ function guessRuns(g: Guess): Run[] {
       color: g.confidence === "high" ? p.color : C.dim,
       bold: g.confidence === "high",
       dot: p.color,
+      glyph: p.glyph,
     },
   ];
 }
@@ -247,7 +281,7 @@ export function renderSvg(scan: ScanResult, opts: ImageOptions): string {
     for (const { col, run } of l.runs) {
       let tc = col;
       if (run.dot) {
-        out.push(`<circle cx="${x(col) + CW / 2}" cy="${yMid}" r="4.5" fill="${run.dot}"/>`);
+        out.push(shape(run.glyph ?? "●", x(col) + CW / 2, yMid, run.dot));
         tc += 2;
       }
       const len = [...run.text].length;
