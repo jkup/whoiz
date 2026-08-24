@@ -2,28 +2,17 @@
 
 **Who is actually serving this site?**
 
-`whoiz` takes a domain, enumerates its endpoints (sitemap, robots.txt, and a polite shallow crawl), and fingerprints the CDN *and* the hosting provider behind every path and subdomain — then draws you a tree.
+```
+npx @jkup/whoiz mercedesamgf1.com
+```
 
 <img src="whoiz.png" alt="whoiz mercedesamgf1.com — the main site on Netlify, the shop on Shopify behind Cloudflare, a media host it can't identify" width="800">
 
-`npx @jkup/whoiz mercedesamgf1.com` above: the main site is on Netlify, the shop is Shopify fronted by Cloudflare, and the media host is something whoiz doesn't recognise — so it says so. Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict.
+`whoiz` takes a domain, enumerates its endpoints (sitemap, robots.txt, and a polite shallow crawl), and fingerprints the CDN *and* the hosting provider behind every path and subdomain — then draws you a tree. Above: the main site is on Netlify, the shop is Shopify fronted by Cloudflare, and the media host is something whoiz doesn't recognise — so it says so.
 
-### Share it
+Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict. Add `--image whoiz.png` to get the card above as a PNG, ready to post — connectors and provider icons are drawn as vector shapes, so it looks the same on every machine.
 
-```
-whoiz vercel.com --image vercel.png
-```
-
-writes the same tree as a dark terminal-style card, ready to post. Connectors and provider dots are drawn as vector shapes, so it looks the same on every machine regardless of installed fonts.
-
-## Install
-
-```
-npx @jkup/whoiz vercel.com    # no install
-npm i -g @jkup/whoiz          # or globally, then just `whoiz`
-```
-
-Requires Node 20+.
+Requires Node 20+. Install globally with `npm i -g @jkup/whoiz` to use it as plain `whoiz`.
 
 ## Usage
 
