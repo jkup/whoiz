@@ -4,7 +4,7 @@
 
 `whoiz` takes a domain, enumerates its endpoints (sitemap, robots.txt, and a polite shallow crawl), and fingerprints the CDN *and* the hosting provider behind every path and subdomain — then draws you a tree.
 
-<img src="https://raw.githubusercontent.com/jkup/whoiz/main/whoiz.png" alt="whoiz mercedesamgf1.com — the main site on Netlify, the shop on Shopify behind Cloudflare, a media host it can't identify" width="800">
+<img src="whoiz.png" alt="whoiz mercedesamgf1.com — the main site on Netlify, the shop on Shopify behind Cloudflare, a media host it can't identify" width="800">
 
 `npx @jkup/whoiz mercedesamgf1.com` above: the main site is on Netlify, the shop is Shopify fronted by Cloudflare, and the media host is something whoiz doesn't recognise — so it says so. Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict.
 
