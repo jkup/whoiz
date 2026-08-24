@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 import { connect } from "node:tls";
 
 export interface CertInfo {
@@ -7,7 +8,14 @@ export interface CertInfo {
 
 export function certInfo(host: string, timeout = 5000): Promise<CertInfo | undefined> {
   return new Promise((resolve) => {
-    const sock = connect({ host, port: 443, servername: host, rejectUnauthorized: false, timeout });
+    // SNI is not allowed for IP literals (RFC 6066); Node warns loudly if you try.
+    const sock = connect({
+      host,
+      port: 443,
+      servername: isIP(host) ? undefined : host,
+      rejectUnauthorized: false,
+      timeout,
+    });
     const done = (v?: CertInfo) => {
       sock.destroy();
       resolve(v);
