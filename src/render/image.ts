@@ -14,7 +14,7 @@ export interface ImageOptions {
   attribution?: string;
 }
 
-const FONT = "JetBrains Mono, SF Mono, Menlo, Consolas, DejaVu Sans Mono, monospace";
+export const FONT = "JetBrains Mono, SF Mono, Menlo, Consolas, DejaVu Sans Mono, monospace";
 const FS = 15; // font size
 const CW = FS * 0.6; // monospace advance
 const LH = 24; // line height
@@ -22,7 +22,7 @@ const PAD = 28;
 const MIN_COLS = 72;
 const MAX_COLS = 100;
 
-const C = {
+export const C = {
   bg: "#0d1117",
   border: "#30363d",
   text: "#e6edf3",
@@ -69,7 +69,7 @@ const SHAPES: Record<string, string> = {
   "◌": '<circle r="4.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.2 2"/>',
 };
 
-function shape(glyph: string, cx: number, cy: number, color: string): string {
+export function shape(glyph: string, cx: number, cy: number, color: string): string {
   const body = SHAPES[glyph] ?? SHAPES["●"]!;
   return `<g transform="translate(${cx} ${cy})" color="${color}">${body}</g>`;
 }

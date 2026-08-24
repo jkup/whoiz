@@ -39,7 +39,8 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
     "update-ranges": "tsx scripts/update-ranges.ts",
-    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+    "prepublishOnly": "npm run typecheck && npm test && npm run build",
+    "docs:providers": "tsx scripts/render-providers.ts"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

@@ -45,7 +45,11 @@ Every host gets resolved (CNAME chain, A/AAAA, ASN via Team Cymru DNS, TLS issue
 
 If only edge signals fire, the CDN is either serving it directly (Pages, Workers, cached) or hiding the origin; whoiz says `no upstream seen` rather than guessing.
 
-Recognised: Cloudflare (+ Pages), Vercel, Netlify, CloudFront, S3, Fastly, GitHub (+ Pages), Fly.io, Render, Google Cloud, Firebase, Azure, Akamai, Heroku, Railway, DigitalOcean, Hetzner, Shopify, Squarespace, Wix, Webflow, WordPress.com, Framer, Discourse, Ghost, HubSpot, Substack, GitBook, ReadMe, Zendesk, Statuspage, Mintlify. Adding one is a couple of lines in [`src/fingerprint/rules.ts`](src/fingerprint/rules.ts).
+Recognised providers (icons and colours as they appear in the card):
+
+<img src="docs/providers.svg" alt="Cloudflare, Vercel, Netlify, CloudFront, S3, Fastly, GitHub Pages, Fly.io, Render, Google Cloud, Firebase, Azure, Akamai, Heroku, Railway, DigitalOcean, Hetzner, Shopify, Squarespace, Wix, Webflow, WordPress.com, Framer, Discourse, Ghost, HubSpot, Substack, GitBook, ReadMe, Zendesk, Statuspage, Mintlify" width="800">
+
+Adding one is a couple of lines in [`src/fingerprint/rules.ts`](src/fingerprint/rules.ts) and [`providers.ts`](src/fingerprint/providers.ts); `npm run docs:providers` regenerates the legend.
 
 ## Etiquette
 
