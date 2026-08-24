@@ -1,0 +1,53 @@
+{
+  "name": "@jkup/whoiz",
+  "version": "0.1.0",
+  "description": "Who is actually serving this site? Enumerate a domain's endpoints and fingerprint the CDN and hosting provider behind each one.",
+  "keywords": [
+    "cdn",
+    "hosting",
+    "fingerprint",
+    "cloudflare",
+    "vercel",
+    "netlify",
+    "cli",
+    "recon",
+    "dns"
+  ],
+  "license": "MIT",
+  "author": "Jon Kuperman",
+  "repository": { "type": "git", "url": "git+https://github.com/jkup/whoiz.git" },
+  "homepage": "https://github.com/jkup/whoiz#readme",
+  "bugs": { "url": "https://github.com/jkup/whoiz/issues" },
+  "type": "module",
+  "bin": { "whoiz": "dist/cli.js" },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit",
+    "update-ranges": "tsx scripts/update-ranges.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "fast-xml-parser": "^5.0.9",
+    "htmlparser2": "^10.0.0",
+    "p-limit": "^6.2.0",
+    "picocolors": "^1.1.1",
+    "robots-parser": "^3.0.1",
+    "tldts": "^7.0.2",
+    "undici": "^7.8.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.14.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  }
+}
