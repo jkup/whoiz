@@ -79,6 +79,9 @@ export function verdictFrom(reasons: Reason[]): Verdict {
     return { origin: edge, note: `${origin.provider} network` };
   }
 
+  // A lone weak edge signal (e.g. "this IP belongs to a Microsoft ASN") is not worth a "via".
+  if (edge.confidence === "low") return { origin };
+
   return { edge, origin, note };
 }
 

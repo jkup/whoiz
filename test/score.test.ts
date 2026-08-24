@@ -118,6 +118,15 @@ describe("fingerprint", () => {
     expect(v.origin.provider).toBe("vercel");
   });
 
+  it("a lone low-confidence edge signal is dropped (github.com on a Microsoft ASN)", () => {
+    const v = fingerprint(
+      host({ ips: ["20.26.156.215"], asn: { number: 8075, org: "MICROSOFT" } }),
+      res({ server: "GitHub.com", "x-github-request-id": "x" }),
+    );
+    expect(v.origin.provider).toBe("github");
+    expect(v.edge).toBeUndefined();
+  });
+
   it("sameVerdict compares edge and origin", () => {
     const a = fingerprint(
       host({ ips: ["104.16.1.1"] }),

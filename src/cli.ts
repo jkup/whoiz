@@ -15,8 +15,13 @@ const program = new Command()
   .option("--why", "show the evidence behind each verdict", false)
   .option("--all", "don't collapse identical siblings or truncate long lists", false)
   .option("-d, --depth <n>", "crawl depth", (v) => Number.parseInt(v, 10), 2)
-  .option("-m, --max <n>", "maximum URLs to fetch", (v) => Number.parseInt(v, 10), 100)
-  .option("-c, --concurrency <n>", "parallel requests", (v) => Number.parseInt(v, 10), 4)
+  .option(
+    "-m, --max <n>",
+    "maximum URLs to fetch (default 100, or 30 with --no-crawl)",
+    (v) => Number.parseInt(v, 10),
+    100,
+  )
+  .option("-c, --concurrency <n>", "parallel requests", (v) => Number.parseInt(v, 10), 8)
   .option("-t, --timeout <ms>", "per-request timeout", (v) => Number.parseInt(v, 10), 8000)
   .option("--no-crawl", "only use sitemap, robots.txt and the homepage")
   .option("--no-subdomains", "ignore other hosts under the same domain")
@@ -38,6 +43,7 @@ const opts = program.opts<{
   ascii: boolean;
 }>();
 const target = program.args[0]!;
+if (!opts.crawl && program.getOptionValueSource("max") === "default") opts.max = 30;
 
 const spinnerFrames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 const interactive = process.stderr.isTTY && !opts.json;

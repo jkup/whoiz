@@ -42,13 +42,17 @@ const api: HostResult = {
   host: "api.jonkuperman.com",
   evidence: { host: "api.jonkuperman.com", cnames: ["x.fly.dev"], ips: ["66.241.1.1"] },
   verdict: V("fly"),
-  urls: [u("api.jonkuperman.com", "/", V("fly"))],
+  urls: [
+    u("api.jonkuperman.com", "/", V("fly")),
+    u("api.jonkuperman.com", "/v1", V("fly")),
+    u("api.jonkuperman.com", "/v2", V("fly")),
+  ],
 };
 const scan: ScanResult = {
   input: "jonkuperman.com",
   root,
   subdomains: [api],
-  stats: { urls: 7, providers: ["vercel", "cloudflare", "fly"], subdomains: 1, ms: 1834 },
+  stats: { urls: 9, providers: ["vercel", "cloudflare", "fly"], subdomains: 1, ms: 1834 },
   version: "0.0.0",
 };
 
@@ -66,10 +70,10 @@ describe("renderPretty", () => {
         |- 5 paths                              Vercel  via Cloudflare  same as host
         |  /, /about, /blog (2), /old
         |
-        \`- api.jonkuperman.com                  Fly.io
+        \`- api.jonkuperman.com  (3 paths)       Fly.io
            |  66.241.1.1 - CNAME x.fly.dev
 
-        7 URLs - 3 providers - 1 subdomain - 1.8s
+        9 URLs - 3 providers - 1 subdomain - 1.8s
       "
     `);
   });

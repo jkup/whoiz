@@ -125,8 +125,29 @@ function renderHost(
   b: Box,
   push: (s?: string) => void,
 ): void {
+  const tree = buildTree(h.urls);
+  const items: PathNode[] = [
+    ...(tree.result ? [{ ...tree, children: [], count: 1, collapsed: tree.result.verdict }] : []),
+    ...tree.children,
+  ];
+  // Paths that look exactly like the host are grouped into one summary line; differences get their own lines.
+  const differing = opts.all
+    ? items
+    : items.filter((n) => !(n.collapsed && sameVerdict(n.collapsed, h.verdict)));
+  const same = opts.all
+    ? []
+    : items.filter((n) => n.collapsed && sameVerdict(n.collapsed, h.verdict));
+  const sameCount = same.reduce((s, n) => s + n.count, 0);
+  // A uniform subdomain gets its count folded into the header instead of a repeated block.
+  const foldIntoHeader = !ctx.isRoot && differing.length === 0 && sameCount > 1;
+  const showSame =
+    same.length > 0 &&
+    !foldIntoHeader &&
+    !(sameCount === 1 && same[0]?.path === "/" && differing.length === 0);
+
   const label = ctx.isRoot ? bold(h.host) : h.host;
-  const head = ctx.prefix ? `${ctx.prefix} ${label}` : label;
+  const countTag = foldIntoHeader ? dim(`  (${sameCount} paths)`) : "";
+  const head = `${ctx.prefix ? `${ctx.prefix} ${label}` : label}${countTag}`;
   push(
     `${padEnd(head, LABEL_COL)}${h.error ? red(` ${h.error}`) : verdictText(h.verdict, ctx.parentEdge, opts.ascii)}`,
   );
@@ -143,23 +164,6 @@ function renderHost(
     for (const r of [...h.verdict.origin.reasons, ...(h.verdict.edge?.reasons ?? [])])
       push(`${cont}  ${dim(`↳ ${r.rule}: ${r.detail}`)}`);
 
-  const tree = buildTree(h.urls);
-  const items: PathNode[] = [
-    ...(tree.result ? [{ ...tree, children: [], count: 1, collapsed: tree.result.verdict }] : []),
-    ...tree.children,
-  ];
-  if (!items.length) return;
-
-  // Paths that look exactly like the host are grouped into one summary line; differences get their own lines.
-  const differing = opts.all
-    ? items
-    : items.filter((n) => !(n.collapsed && sameVerdict(n.collapsed, h.verdict)));
-  const same = opts.all
-    ? []
-    : items.filter((n) => n.collapsed && sameVerdict(n.collapsed, h.verdict));
-  const sameCount = same.reduce((s, n) => s + n.count, 0);
-  const showSame =
-    same.length > 0 && !(sameCount === 1 && same[0]?.path === "/" && differing.length === 0);
   if (!differing.length && !showSame) return;
 
   push(cont);

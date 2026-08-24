@@ -26,8 +26,8 @@ whoiz <domain or URL> [options]
   --why                show the evidence behind each verdict
   --all                don't collapse identical siblings or truncate long lists
   -d, --depth <n>      crawl depth (default 2)
-  -m, --max <n>        maximum URLs to fetch (default 100)
-  -c, --concurrency    parallel requests (default 4)
+  -m, --max <n>        maximum URLs to fetch (default 100, or 30 with --no-crawl)
+  -c, --concurrency    parallel requests (default 8)
   -t, --timeout <ms>   per-request timeout (default 8000)
   --no-crawl           only use sitemap, robots.txt and the homepage
   --no-subdomains      ignore other hosts under the same domain
@@ -48,7 +48,7 @@ Recognised: Cloudflare (+ Pages), Vercel, Netlify, CloudFront, S3, Fastly, GitHu
 
 ## Etiquette
 
-whoiz identifies itself (`whoiz/<version> (+repo)`), obeys `robots.txt`, defaults to 4 concurrent requests and 100 URLs, backs off on the first `429`, and never follows links off the domain — other subdomains are only probed at their root plus a few linked pages. It only talks to the target and to DNS; there are no third-party APIs or telemetry.
+whoiz identifies itself (`whoiz/<version> (+repo)`), obeys `robots.txt`, defaults to 8 concurrent requests and 100 URLs, backs off on the first `429`, and never follows links off the domain — other subdomains are only probed at their root plus a few linked pages. It only talks to the target and to DNS; there are no third-party APIs or telemetry.
 
 ## Limitations
 

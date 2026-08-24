@@ -32,7 +32,9 @@ export async function loadSitemaps(
   const seen = new Set<string>();
   const queue = [...candidates];
   let fetched = 0;
-  while (queue.length && urls.size < max && fetched < 8) {
+  // Read well past `max` so sampling can spread across sections instead of taking the first sitemap only.
+  const pool = Math.max(max * 20, 2000);
+  while (queue.length && urls.size < pool && fetched < 8) {
     const sm = queue.shift()!;
     if (seen.has(sm)) continue;
     seen.add(sm);
@@ -53,8 +55,40 @@ export async function loadSitemaps(
       if (entry?.loc) queue.push(String(entry.loc).trim());
     }
     for (const entry of asArray(set?.url as { loc?: string }[] | { loc?: string } | undefined)) {
-      if (entry?.loc && urls.size < max) urls.add(String(entry.loc).trim());
+      if (entry?.loc && urls.size < pool) urls.add(String(entry.loc).trim());
     }
   }
-  return [...urls];
+  return diversify([...urls], max);
+}
+
+/**
+ * Pick up to `max` URLs spread across top-level path prefixes (round-robin) so a
+ * 5,000-entry /blog doesn't crowd out /docs, /pricing and /api.
+ */
+export function diversify(urls: string[], max: number): string[] {
+  if (urls.length <= max) return urls;
+  const groups = new Map<string, string[]>();
+  for (const u of urls) {
+    let key = "/";
+    try {
+      key = new URL(u).pathname.split("/")[1] ?? "/";
+    } catch {
+      /* keep "/" */
+    }
+    groups.set(key, [...(groups.get(key) ?? []), u]);
+  }
+  const out: string[] = [];
+  const lists = [...groups.values()];
+  for (let i = 0; out.length < max; i++) {
+    let took = false;
+    for (const list of lists) {
+      const u = list[i];
+      if (u !== undefined && out.length < max) {
+        out.push(u);
+        took = true;
+      }
+    }
+    if (!took) break;
+  }
+  return out;
 }
