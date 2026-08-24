@@ -34,7 +34,7 @@ const list: Provider[] = [
   { id: "framer", name: "Framer", glyph: "◧", color: "#0055FF", fallback: "blue" },
   { id: "hetzner", name: "Hetzner", glyph: "▣", color: "#D50C2D", fallback: "red" },
   { id: "discourse", name: "Discourse", glyph: "◌", color: "#00A94F", fallback: "green" },
-  { id: "ghost", name: "Ghost(Pro)", glyph: "◌", color: "#15171A", fallback: "white" },
+  { id: "ghost", name: "Ghost(Pro)", glyph: "◌", color: "#C8C8C8", fallback: "white" },
   { id: "hubspot", name: "HubSpot", glyph: "◌", color: "#FF7A59", fallback: "yellow" },
   { id: "substack", name: "Substack", glyph: "◌", color: "#FF6719", fallback: "yellow" },
   { id: "gitbook", name: "GitBook", glyph: "◌", color: "#BBDDE5", fallback: "cyan" },

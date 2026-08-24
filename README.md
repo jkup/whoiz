@@ -8,6 +8,14 @@
 
 `npx @jkup/whoiz mercedesamgf1.com` above: the main site is on Netlify, the shop is Shopify fronted by Cloudflare, and the media host is something whoiz doesn't recognise — so it says so. Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict.
 
+### Share it
+
+```
+whoiz vercel.com --image vercel.png
+```
+
+writes the same tree as a dark terminal-style card, ready to post. Connectors and provider dots are drawn as vector shapes, so it looks the same on every machine regardless of installed fonts.
+
 ## Install
 
 ```
@@ -31,6 +39,8 @@ whoiz <domain or URL> [options]
   -t, --timeout <ms>   per-request timeout (default 8000)
   --no-crawl           only use sitemap, robots.txt and the homepage
   --no-subdomains      ignore other hosts under the same domain
+  -i, --image <file>   also write the tree as a shareable PNG (or SVG if the name ends in .svg)
+  --scale <n>          PNG pixel density (default 2)
   --ascii              plain ASCII tree characters
   --no-color           disable colours (also honours NO_COLOR)
 ```

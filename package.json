@@ -1,6 +1,6 @@
 {
   "name": "@jkup/whoiz",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Who is actually serving this site? Enumerate a domain's endpoints and fingerprint the CDN and hosting provider behind each one.",
   "keywords": [
     "cdn",
@@ -15,13 +15,22 @@
   ],
   "license": "MIT",
   "author": "Jon Kuperman",
-  "repository": { "type": "git", "url": "git+https://github.com/jkup/whoiz.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkup/whoiz.git"
+  },
   "homepage": "https://github.com/jkup/whoiz#readme",
-  "bugs": { "url": "https://github.com/jkup/whoiz/issues" },
+  "bugs": {
+    "url": "https://github.com/jkup/whoiz/issues"
+  },
   "type": "module",
-  "bin": { "whoiz": "dist/cli.js" },
+  "bin": {
+    "whoiz": "dist/cli.js"
+  },
   "files": ["dist", "README.md", "LICENSE"],
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsx src/cli.ts",
@@ -33,6 +42,7 @@
     "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "commander": "^13.1.0",
     "fast-xml-parser": "^5.0.9",
     "htmlparser2": "^10.0.0",

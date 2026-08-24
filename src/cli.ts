@@ -1,5 +1,7 @@
+import { writeFile } from "node:fs/promises";
 import { Command } from "commander";
 import { dim, red } from "./render/color.js";
+import { renderPng, renderSvg } from "./render/image.js";
 import { renderJson } from "./render/json.js";
 import { renderPretty } from "./render/pretty.js";
 import { VERSION, scan } from "./scan.js";
@@ -25,6 +27,11 @@ const program = new Command()
   .option("-t, --timeout <ms>", "per-request timeout", (v) => Number.parseInt(v, 10), 8000)
   .option("--no-crawl", "only use sitemap, robots.txt and the homepage")
   .option("--no-subdomains", "ignore other hosts under the same domain")
+  .option(
+    "-i, --image <file>",
+    "also write the tree as a shareable PNG (or SVG if the name ends in .svg)",
+  )
+  .option("--scale <n>", "PNG pixel density (default 2)", (v) => Number.parseFloat(v), 2)
   .option("--ascii", "plain ASCII tree characters", false)
   .option("--no-color", "disable colours")
   .showHelpAfterError();
@@ -41,6 +48,8 @@ const opts = program.opts<{
   crawl: boolean;
   subdomains: boolean;
   ascii: boolean;
+  image?: string;
+  scale: number;
 }>();
 const target = program.args[0]!;
 if (!opts.crawl && program.getOptionValueSource("max") === "default") opts.max = 30;
@@ -77,6 +86,12 @@ try {
       ? `${renderJson(result)}\n`
       : renderPretty(result, { why: opts.why, all: opts.all, ascii: opts.ascii }),
   );
+  if (opts.image) {
+    const svg = renderSvg(result, { why: opts.why, all: opts.all });
+    const data = opts.image.toLowerCase().endsWith(".svg") ? svg : await renderPng(svg, opts.scale);
+    await writeFile(opts.image, data);
+    process.stderr.write(dim(`  wrote ${opts.image}\n`));
+  }
   process.exit(result.root.error ? 1 : 0);
 } catch (e) {
   if (tick) {
