@@ -4,27 +4,9 @@
 
 `whoiz` takes a domain, enumerates its endpoints (sitemap, robots.txt, and a polite shallow crawl), and fingerprints the CDN *and* the hosting provider behind every path and subdomain — then draws you a tree.
 
-```
-$ npx @jkup/whoiz jonkuperman.com
+<img src="https://raw.githubusercontent.com/jkup/whoiz/main/whoiz.png" alt="whoiz mercedesamgf1.com — the main site on Netlify, the shop on Shopify behind Cloudflare, a media host it can't identify" width="800">
 
-  whoiz  jonkuperman.com
-
-  jonkuperman.com                         ▲ Vercel  via ☁ Cloudflare
-  │  104.26.7.114 +5 · AS13335 Cloudflare · TLS by Google Trust Services
-  │
-  ├─ /contact                             ☁ Cloudflare  no upstream seen
-  ├─ 12 paths                             ▲ Vercel  via ☁ Cloudflare  same as host
-  │  /, /about, /blog (8), /feed (2)
-  │
-  ├─ api.jonkuperman.com                  ✈ Fly.io
-  │  │  66.241.124.7 · AS40509 Fly.io · CNAME x.fly.dev
-  └─ docs.jonkuperman.com                 ◆ GitHub Pages  via ☁ Cloudflare
-     │  104.21.4.1 +3 · AS13335 Cloudflare · CNAME jon.github.io
-
-  16 URLs · 4 providers · 2 subdomains · 1.8s
-```
-
-Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict.
+`npx @jkup/whoiz mercedesamgf1.com` above: the main site is on Netlify, the shop is Shopify fronted by Cloudflare, and the media host is something whoiz doesn't recognise — so it says so. Paths that are served exactly like the host are folded into one line so the *differences* stand out. Use `--all` to see every path, and `--why` to see the evidence behind each verdict.
 
 ## Install
 
